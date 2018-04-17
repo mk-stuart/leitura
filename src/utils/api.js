@@ -1,6 +1,7 @@
-const api = "localhost:3001"
+const api = "http://localhost:3001"
 
-// Generate a unique token for storing your bookshelf data on the backend server.
+// Generate a unique token
+/*
 let token = localStorage.token
 if (!token)
   token = localStorage.token = Math.random().toString(36).substr(-8)
@@ -10,7 +11,9 @@ const headers = {
   'Authorization': token
 }
 /* Get - API*/
-
+const headers = {
+  'Authorization': 'whatever'
+}
 /* Get all of the categories available for the app. */
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })
@@ -25,7 +28,20 @@ export const getAllPostsCategory = (category) =>
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
-    .then(data => data.posts)
+    //.then(data => data.posts)
+
+export function fetchPosts () {
+  
+    /*var request = new Request('http://localhost:3001/posts', {
+	    headers: new Headers({
+		    'Authorization': 'whatever'
+      })
+    });
+
+    return fetch(request)
+        .then((res) => res.json())*/
+    
+}    
 /* 	Get the details of a single post. */
 export const getPost = (id) =>
   fetch(`${api}/posts/${id}`, { headers })
