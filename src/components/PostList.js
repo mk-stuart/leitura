@@ -1,36 +1,55 @@
+import React, { Component } from 'react'
 import * as FontAwesome from 'react-icons/lib/fa'
-import React from 'react'
+import { connect } from 'react-redux'
+import * as LeituraApi from '../utils/api'
+import * as Actions from '../actions'
+class PostList extends Component {
 
-export default function postList ({ post }) {
-    console.log(post)
-    if (typeof post === 'undefined' || post === null){
-        return <p> No Posts to show! .</p>
+    getAllPosts(){
+        const { loadPosts } = this.props
+        LeituraApi.getAllPosts().then((result) => {
+            Actions.loadPosts(result)
+            console.log(result)
+        })
     }
-    return (
-        <div className="container">
-        <span className="d-block text-right"><FontAwesome.FaSortAmountAsc size={20}/></span>
-          <ul className="list-unstyled">
-            {post.map((item) => (
-              <li className="media">
-                <div className="media-body">
-                    <div className="row">
-                      <div className="col">
-                        <h4>{item.title}</h4>
-                        <h6>Author: {item.author}</h6>
-                      </div>
-                      <div className="col">
-                        <h5>{item.commentCount} comments</h5>
-                        <h4>Points: {item.voteScore}</h4>
-                      </div>
-                      <div className="col">
-                        <FontAwesome.FaThumbsOUp />
-                        <FontAwesome.FaThumbsODown />
-                      </div>
+    componentDidMount(){
+        this.getAllPosts()
+    }
+    render(){
+        const posts = this.props
+        return (
+            <div className="container">
+                <p> Conteúdo dos Posts</p>
+                <div className="card">
+                    <div className="card-header">
+                         Categoria que Pertence
+                        <div className="float-right">
+                            <p>10 Comentários</p>
+                        </div>
                     </div>
-                </div>
-              </li>
-            ))}                   
-          </ul>
-      </div>
-    )
+                    <div className="card-body">
+                        <h5 className="card-title">Título do Post</h5>
+                        <p className="card-text">Author: Pessoa X</p>
+                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                        <div className="col">
+                            <FontAwesome.FaThumbsOUp />
+                        </div>
+                        <div className="col">
+                            <FontAwesome.FaThumbsODown />
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        )
+    }
 }
+function mapStateToProps ({posts}, props) {
+    return { posts }
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+      loadPosts: (data) => dispatch(Actions.loadPosts(data)) 
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PostList)

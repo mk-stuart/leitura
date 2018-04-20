@@ -1,33 +1,33 @@
-export const ADD_POST = 'ADD_POST'
-export const ADD_COMMENT = 'ADD_COMMENT'
-export const REMOVE_POST = 'REMOVE_POST'
-export const REMOVE_COMMENT = 'REMOVE_COMMENT'
+export const LOAD_POSTS = 'LOAD_POSTS'
+export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
+export const LOAD_COMMENTS = 'LOAD_COMMENTS'
+export const LOAD_POST = 'LOAD_POST'
 
-export function addPost ({ post }){
+export function loadPosts (posts){
     return {
-        type: ADD_POST,
-        post,
+        type: LOAD_POSTS,
+        posts,
     }
 }
 
-export function addComment ({ comment }){
+export function loadCategories (categories){
     return {
-        type: ADD_COMMENT,
-        comment,
+        type: LOAD_CATEGORIES,
+        categories,
     }
 }
 
-export function removePost ({ post }){
+export function loadComments (comments){
     return {
-        type: REMOVE_POST,
-        post,
+        type: LOAD_COMMENTS,
+        comments,
     }
 }
 
-export function removeComment ({ comment }){
+export function loadPost ({ post }){
     return {
-        type: REMOVE_COMMENT,
-        comment
+        type: LOAD_POST,
+        post
     }
 }
 
