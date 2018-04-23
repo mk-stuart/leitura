@@ -9,3 +9,6 @@ body {
 .cursor-pointer{
   cursor: pointer;
 }
+.card {
+  margin-bottom: 2%;
+}

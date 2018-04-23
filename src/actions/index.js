@@ -6,21 +6,21 @@ export const LOAD_POST = 'LOAD_POST'
 export function loadPosts (posts){
     return {
         type: LOAD_POSTS,
-        posts,
+        posts
     }
 }
 
 export function loadCategories (categories){
     return {
         type: LOAD_CATEGORIES,
-        categories,
+        categories
     }
 }
 
 export function loadComments (comments){
     return {
         type: LOAD_COMMENTS,
-        comments,
+        comments
     }
 }
 

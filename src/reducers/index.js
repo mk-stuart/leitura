@@ -35,9 +35,14 @@ function post (state = {}, action){
     }
 }
 
-function comment (state = [], action){
-
+function comments (state = [], action){
+    switch (action.type) {
+        case LOAD_COMMENTS:
+            return action.comment
+        default:
+            return state
+    }
 }
 export default combineReducers({
-    post, posts, categories
+    post, posts, categories, comments
 })
