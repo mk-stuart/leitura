@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from '../imgs/title-final.png';
 import '../index.css';
 import PostList from './PostList'
+import DetailsPost from './DetailsPost'
 import { getAllCategories } from '../utils/api'
 import { loadCategories } from '../actions'
 //import NavbarCategories from './navbarCategories'
@@ -39,6 +40,16 @@ class App extends Component {
           <Route path="/" exact render ={() => (
             <div>
               <PostList />
+            </div>
+          )} />
+          <Route path="/:category" exact render ={({match}) => (
+            <div>
+              <PostList />
+            </div>
+          )} />
+          <Route path="/:category/:id_post" exact render ={({match}) => (
+            <div>
+              <DetailsPost content={match} />
             </div>
           )} />
           </div>

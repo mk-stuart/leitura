@@ -38,7 +38,7 @@ function post (state = {}, action){
 function comments (state = [], action){
     switch (action.type) {
         case LOAD_COMMENTS:
-            return action.comment
+            return action.comments
         default:
             return state
     }
