@@ -12,16 +12,16 @@ class DetailsPost extends Component {
         const { id_post } = this.props.content.params
         const { loadComments } = this.props
         LeituraApi.getPostComments(id_post).then((result) => {
-            console.log(result)
+            //console.log(result)
             loadComments(result)
         })
     }
     getPost() {
         const { id_post } = this.props.content.params
-        console.log(this.props)
         console.log(this.props.content.params)
+        const { loadPost } = this.props
         LeituraApi.getPost(id_post).then((result) => {
-            console.log(result)
+            //console.log(result)
             loadPost(result)
         })
     }
@@ -32,32 +32,37 @@ class DetailsPost extends Component {
 
     render() {
         const comment = this.props.comment
-        const post = this.props
+        const post = this.props.post.post
+        {console.log(post)}
         return (
             <div className="container-fluid">
                 <p> Conteúdo dos Comentários</p>
                 <div>
+                    {Object.keys(post).length > 0 && (
+                        <div>
+                            
+                                <div key={post.id} className="card">
+                                    <div className="card-header font-weight-bold">
+                                        <h4 className="float-left">{capitalize(post.category)}</h4>
+                                        <div className="float-right">
+                                            <p><span className="badge badge-primary badge-pill">{post.commentCount}</span> Comentários</p>
+                                        </div>
+                                    </div>
+                                    <div className="card-body">
+                                        <h5 className="card-title">{capitalize(post.title)}</h5>
+                                        <p className="card-text">Author: {capitalize(post.author)}</p>
 
-                    <div key={`result.id`} className="card">
-                        <div className="card-header font-weight-bold">
-                            <h4 className="float-left">{capitalize(`categoria`)}</h4>
-                            <div className="float-right">
-                                <p><span className="badge badge-primary badge-pill">{`10`}</span> Comentários</p>
-                            </div>
+                                        <div className="d-flex flex-row">
+                                            <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></div>
+                                            <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></div>
+                                            <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></div>
+                                            <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
                         </div>
-                        <div className="card-body">
-                            <h5 className="card-title">{capitalize(`titulo`)}</h5>
-                            <p className="card-text">Author: {capitalize(`Autor`)}</p>
-
-                            <div className="d-flex flex-row">
-                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></div>
-                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></div>
-                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></div>
-                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></div>
-                            </div>
-                        </div>
-                    </div>
-
+                    )}
                 </div>
                 <div>
                     <div className="col-lg-10">

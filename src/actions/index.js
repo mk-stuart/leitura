@@ -24,7 +24,7 @@ export function loadComments (comments){
     }
 }
 
-export function loadPost ({ post }){
+export function loadPost (post){
     return {
         type: LOAD_POST,
         post
