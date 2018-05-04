@@ -12,7 +12,7 @@ class DetailsPost extends Component {
         const { id_post } = this.props.content.params
         const { loadComments } = this.props
         LeituraApi.getPostComments(id_post).then((result) => {
-            console.log(result)
+            //console.log(result)
             loadComments(result)
         })
     }
@@ -120,7 +120,7 @@ class DetailsPost extends Component {
                                 <input type="text" className="form-control" placeholder="Author..." />
                             </div>
                             <div className="col-lg-1 col-1 send-icon">
-                                <a href="http://nicesnippets.com/" target="_blank"><i className="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                <a href="#" target="_blank"><i className="fa fa-paper-plane" aria-hidden="true"></i></a>
                             </div>
                         </div>
                     </nav>
