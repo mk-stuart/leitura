@@ -18,7 +18,13 @@ class PostList extends Component {
     componentDidMount() {
         this.getAllPosts()
     }
-
+    votePost(id, vote){
+        LeituraApi.votePost(id, vote).then((result) =>{
+            console.log(result)
+            //loadPost(result)
+            this.getAllPosts()
+        })
+    }
     render() {
         const postGroup = this.props.postGroup
         return (
@@ -30,8 +36,9 @@ class PostList extends Component {
                             <div key={result.id} className="card">
                                 <div className="card-header font-weight-bold">
                                     <h4 className="float-left">{capitalize(result.category)}</h4>
-                                    <div className="float-right">
-                                        <p><span className="badge badge-primary badge-pill">{result.commentCount}</span> Comentários</p>
+                                    <div className="float-right d-flex flex-row">
+                                        <div className="padding-right-small"><span className="badge badge-primary badge-pill">{result.voteScore} </span> Vote Score </div>
+                                        <div><span className="badge badge-primary badge-pill">{result.commentCount} </span> Comentários </div>
                                     </div>
                                 </div>
                                 <div className="card-body">
@@ -39,8 +46,8 @@ class PostList extends Component {
                                     <p className="card-text">Author: {capitalize(result.author)}</p>
                                     <a href={`${result.category}/${result.id}`} className="btn btn-primary">Open Post <FontAwesome.FaHandPeaceO size={25} /> </a>
                                     <div className="d-flex flex-row">
-                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></div>
-                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></div>
+                                        <a className="p-2" onClick={() => this.votePost(result.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
+                                        <a className="p-2" onClick={() => this.votePost(result.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
                                         <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></div>
                                         <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></div>
                                     </div>

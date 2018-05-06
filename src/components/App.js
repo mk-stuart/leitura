@@ -102,9 +102,9 @@ class App extends Component {
           <Route path="/" exact render ={() => (
             <div>
               <PostList />
-              <button onClick={this.openModalPost} className="float bg-dark">
+              <a onClick={() => this.openModalPost} className="float bg-dark">
                 <i className="fa fa-plus my-float"></i>
-              </button>
+              </a>
 
             </div>
           )} />

@@ -14,7 +14,6 @@ export const getAllCategories = () =>
 export const getAllPostsCategory = (category) =>
   fetch(`${api}/${category}/posts`, { headers })
     .then(res => res.json())
-    .then(data => data.categoryPosts)
 
 /* Get all of the posts. Useful for the main page when no category is selected. */
 export const getAllPosts = () =>
@@ -35,3 +34,32 @@ export const getPostComments = (id) =>
 export const getComment = (id) =>
   fetch(`${api}/comments/${id}`, { headers })
     .then(res => res.json())
+
+/* Used for voting on a comment. */    
+export const voteComment = (id, vote) =>
+  fetch(`${api}/comments/${id}`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ 
+          "option" : vote 
+        }) 
+  }).then(res => res.json())
+
+/* Used for voting on a post. */
+export const votePost = (id, vote) =>
+  fetch(`${api}/posts/${id}`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ 
+          "option" : vote 
+        }) 
+  }).then(res => res.json())
+
+export const addComment = (comment) =>
+  fetch(`${api}/comments`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      comment
+    })
+  }).then(res => res.json())

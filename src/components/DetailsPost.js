@@ -35,6 +35,19 @@ class DetailsPost extends Component {
         datePost = `${datePost.getDate()}/${datePost.getMonth()}/${datePost.getFullYear()}`
         return datePost
     }
+    voteComment(id, vote){
+        LeituraApi.voteComment(id, vote).then((result) =>{
+            console.log(result)
+            this.getAllComments()
+        })
+    }
+    votePost(id, vote){
+        LeituraApi.votePost(id, vote).then((result) =>{
+            console.log(result)
+            //loadPost(result)
+            this.getPost()
+        })
+    }
     render() {
         const comments = this.props.post.comments
         const post = this.props.post.post
@@ -58,17 +71,17 @@ class DetailsPost extends Component {
                                         <p className="card-subtitle">Author: {capitalize(post.author)}</p>
                                         <p className="card-text text-dark">{(post.body)}</p>
                                         <p className="card-text">Sent: {this.datePost(post.timestamp)}</p>
-                                        <div className="card-footer">
+                                    </div>
+                                    <div className="card-footer">
                                             <div className="d-flex flex-row float-left">
-                                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></div>
-                                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></div>
-                                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></div>
-                                                <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></div>
+                                                <a className="p-2" onClick={() => this.votePost(post.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
+                                                <a className="p-2" onClick={() => this.votePost(post.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
+                                                <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
+                                                <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></a>
                                             </div>
                                             <div className="float-right font-weight-bold">
                                                 <p><span className="badge badge-primary badge-pill">{post.voteScore}</span> Vote Score</p>
                                             </div>                                            
-                                        </div>
                                     </div>
                                 </div>
                             
@@ -93,10 +106,10 @@ class DetailsPost extends Component {
                                                     <p className="card-text">Sent: {this.datePost(comment.timestamp)}</p>
         
                                                     <div className="d-flex flex-row float-left">
-                                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></div>
-                                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></div>
-                                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></div>
-                                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></div>
+                                                        <a className="p-2" onClick={() => this.voteComment(comment.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
+                                                        <a className="p-2" onClick={() => this.voteComment(comment.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
+                                                        <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
+                                                        <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></a>
                                                     </div>
                                                     <div className="float-right font-weight-bold">
                                                         <p><span className="badge badge-primary badge-pill">{comment.voteScore}</span> Vote Score</p>

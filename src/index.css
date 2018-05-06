@@ -76,6 +76,9 @@ body{
 /*.form-inline{
   width: 100%;
 }*/
+.padding-right-small{
+  padding-right: 1em
+}
 .color-background-card{
   background-color: #e5edff
 }
