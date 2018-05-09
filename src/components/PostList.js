@@ -20,19 +20,18 @@ class PostList extends Component {
     }
     votePost(id, vote){
         LeituraApi.votePost(id, vote).then((result) =>{
-            console.log(result)
-            //loadPost(result)
             this.getAllPosts()
         })
     }
     render() {
-        const postGroup = this.props.postGroup
+        const {posts, category} = this.props
+        console.log(posts)
         return (
             <div className="container">
                 <p> Conteúdo dos Posts</p>
-                {postGroup.posts.length > 0 && (
+                {posts.posts.length > 0 && (
                     <div>
-                        {postGroup.posts.map(result => (
+                        {posts.posts.map(result => (
                             <div key={result.id} className="card">
                                 <div className="card-header font-weight-bold">
                                     <h4 className="float-left">{capitalize(result.category)}</h4>
@@ -60,8 +59,20 @@ class PostList extends Component {
         )
     }
 }
-function mapStateToProps(postGroup, props) {
-    return { postGroup }
+function mapStateToProps(posts, category, props) {
+    if (category.content && posts.posts.length > 0){
+        posts.posts = posts.posts.filter(e => e.category === category.content.params.category)
+        //debugger
+        //console.log("postgroup")
+        //console.log(postGroup)
+    }
+    
+    /*const _category = category.content.map(data => {
+        return {value:data.name, text: capitalize(data.path)}
+    })*/
+    console.log(category.content)
+    //console.log(posts)
+    return { posts, category }
 }
 /*const mapStateToProps = state => ({
     posts : state.posts

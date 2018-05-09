@@ -110,7 +110,7 @@ class App extends Component {
           )} />
           <Route path="/:category" exact render ={({match}) => (
             <div>
-              <PostList />
+              <PostList content={match} />
             </div>
           )} />
           <Route path="/:category/:id_post" exact render ={({match}) => (
