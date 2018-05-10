@@ -24,8 +24,10 @@ class PostList extends Component {
         })
     }
     render() {
-        const {posts, category} = this.props
+        const {posts, categories} = this.props
         console.log(posts)
+        console.log(categories)
+        console.log(this.props)
         return (
             <div className="container">
                 <p> Conteúdo dos Posts</p>
@@ -59,8 +61,14 @@ class PostList extends Component {
         )
     }
 }
-function mapStateToProps(posts, category, props) {
-    if (category.content && posts.posts.length > 0){
+function mapStateToProps(posts, categories, props) {
+    if (categories.content && posts.posts.length > 0){
+        posts.posts = posts.posts.filter(e => e.category === categories.content.params.category)
+        //debugger
+        //console.log("postgroup")
+        //console.log(postGroup)
+    }
+    /*if (category.content && posts.posts.length > 0){
         posts.posts = posts.posts.filter(e => e.category === category.content.params.category)
         //debugger
         //console.log("postgroup")
@@ -70,9 +78,10 @@ function mapStateToProps(posts, category, props) {
     /*const _category = category.content.map(data => {
         return {value:data.name, text: capitalize(data.path)}
     })*/
-    console.log(category.content)
-    //console.log(posts)
-    return { posts, category }
+    //console.log(props)
+    //console.log(category.content)
+    //console.log(props)
+    return { posts, categories }
 }
 /*const mapStateToProps = state => ({
     posts : state.posts

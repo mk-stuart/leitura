@@ -48,7 +48,7 @@ class App extends Component {
                   <ul className="navbar-nav">
                       <Link to="/" className="nav-link"> Home </Link>
                       { categories.map( category => (
-                          <Link key={category.name} className="nav-link" to={category.path}>{capitalize(category.name)}</Link>                  
+                          <Link key={category.name} className="nav-link" to={`/${category.name}`}>{capitalize(category.name)}</Link>                  
                       ))}
                   </ul>
               )}
@@ -132,9 +132,12 @@ class App extends Component {
 
 //Modal.setAppElement('#app-base');
 
-const mapStateToProps = state => ({
+/*const mapStateToProps = state => ({
   categories: state.categories
-})
+})*/
+function mapStateToProps ( categories ){
+  return categories
+}
 function mapDispatchToProps (dispatch) {
   return {
     loadCategories: (data) => dispatch(loadCategories(data)) 
