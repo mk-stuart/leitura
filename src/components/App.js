@@ -101,11 +101,10 @@ class App extends Component {
           </Modal>
           <Route path="/" exact render ={() => (
             <div>
-              <PostList />
+              <PostList content={null} />
               <a onClick={() => this.openModalPost} className="float bg-dark">
                 <i className="fa fa-plus my-float"></i>
               </a>
-
             </div>
           )} />
           <Route path="/:category" exact render ={({match}) => (

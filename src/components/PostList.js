@@ -15,8 +15,21 @@ class PostList extends Component {
             loadPosts(result)
         })
     }
+    getAllPostsCategory(category){
+        const { loadPosts } = this.props
+        LeituraApi.getAllPostsCategory(category).then((result) => {
+            console.log(result)
+            loadPosts(result)
+        })
+    }
     componentDidMount() {
-        this.getAllPosts()
+        let category = this.props.content
+        if ( category === null){
+            this.getAllPosts()
+        } else {
+            category = this.props.content.params.category
+            this.getAllPostsCategory(category)
+        }
     }
     votePost(id, vote){
         LeituraApi.votePost(id, vote).then((result) =>{
@@ -25,9 +38,9 @@ class PostList extends Component {
     }
     render() {
         const {posts, categories} = this.props
-        console.log(posts)
+        /*console.log(posts)
         console.log(categories)
-        console.log(this.props)
+        console.log(this.props)*/
         return (
             <div className="container">
                 <p> Conteúdo dos Posts</p>
@@ -62,7 +75,7 @@ class PostList extends Component {
     }
 }
 function mapStateToProps(posts, categories, props) {
-    if (categories.content && posts.posts.length > 0){
+   /* if (categories.content && posts.posts.length > 0){
         posts.posts = posts.posts.filter(e => e.category === categories.content.params.category)
         //debugger
         //console.log("postgroup")
