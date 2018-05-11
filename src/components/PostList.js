@@ -18,7 +18,7 @@ class PostList extends Component {
     getAllPostsCategory(category){
         const { loadPosts } = this.props
         LeituraApi.getAllPostsCategory(category).then((result) => {
-            console.log(result)
+            //console.log(result)
             loadPosts(result)
         })
     }
@@ -31,6 +31,16 @@ class PostList extends Component {
             this.getAllPostsCategory(category)
         }
     }
+    componentDidUpdate(nextProps){
+        /*let category = this.props.content
+        if ( category === null){
+            this.getAllPosts()
+        } else {
+            category = this.props.content.params.category
+            this.getAllPostsCategory(category)
+        }*/
+        console.log(nextProps)
+    }   
     votePost(id, vote){
         LeituraApi.votePost(id, vote).then((result) =>{
             this.getAllPosts()
@@ -74,7 +84,7 @@ class PostList extends Component {
         )
     }
 }
-function mapStateToProps(posts, categories, props) {
+function mapStateToProps(posts, categories) {
    /* if (categories.content && posts.posts.length > 0){
         posts.posts = posts.posts.filter(e => e.category === categories.content.params.category)
         //debugger
@@ -93,7 +103,7 @@ function mapStateToProps(posts, categories, props) {
     })*/
     //console.log(props)
     //console.log(category.content)
-    //console.log(props)
+    console.log(posts)
     return { posts, categories }
 }
 /*const mapStateToProps = state => ({

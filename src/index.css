@@ -85,6 +85,9 @@ body{
 .author-comment{
   font-size: 0.8rem
 }
+.margin-bottom-card{
+  margin-bottom: 4em
+}
 .float{
 	position:fixed;
 	width:60px;
