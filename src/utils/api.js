@@ -70,7 +70,7 @@ export const addComment = (id, timestamp, body, author, parentId) =>
   }).then(res => res.json())
 
 export const addPost = (id, timestamp, title, body, author, category) =>
-  fetch(`${api}/comments`, {
+  fetch(`${api}/posts`, {
     method: "POST",
     headers,
     body: JSON.stringify({

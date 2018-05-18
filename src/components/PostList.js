@@ -1,14 +1,32 @@
 import React, { Component } from 'react'
 import * as FontAwesome from 'react-icons/lib/fa'
+import * as Material from 'react-icons/lib/md'
 import { connect } from 'react-redux'
 import * as LeituraApi from '../utils/api'
-//import * as Actions from '../actions'
 import { loadPosts } from '../actions'
-import { capitalize } from '../utils/helpers'
-import { Route, Link, BrowserRouter } from 'react-router-dom'
+import { capitalize, guid } from '../utils/helpers'
+import Modal from 'react-modal'
 
 class PostList extends Component {
-
+    state = {
+        newPostModalOpen: false
+    }
+    openModalPost = () => {
+        this.setState(() => ({
+          newPostModalOpen: true
+        }))
+    }
+    closeModalPost = () =>{
+        this.setState(() => ({
+          newPostModalOpen: false
+        }))
+    }
+    addPost(){      
+        LeituraApi.addPost(guid(), Date.now(), this.title.value, this.body.value, this.author.value, this.select.value).then((result) =>{
+            this.componentDidMount()
+            this.closeModalPost()
+        })
+    }
     getAllPosts() {
         const { loadPosts } = this.props
         LeituraApi.getAllPosts().then((result) => {
@@ -18,7 +36,6 @@ class PostList extends Component {
     getAllPostsCategory(category){
         const { loadPosts } = this.props
         LeituraApi.getAllPostsCategory(category).then((result) => {
-            //console.log(result)
             loadPosts(result)
         })
     }
@@ -31,26 +48,17 @@ class PostList extends Component {
             this.getAllPostsCategory(category)
         }
     }
-    componentDidUpdate(nextProps){
-        /*let category = this.props.content
-        if ( category === null){
-            this.getAllPosts()
-        } else {
-            category = this.props.content.params.category
-            this.getAllPostsCategory(category)
-        }*/
-        console.log(nextProps)
-    }   
+
     votePost(id, vote){
         LeituraApi.votePost(id, vote).then((result) =>{
             this.getAllPosts()
         })
     }
     render() {
-        const {posts, categories} = this.props
-        /*console.log(posts)
+        const { newPostModalOpen } = this.state
+        const {posts} = this.props
+        const { categories } = this.props.posts
         console.log(categories)
-        console.log(this.props)*/
         return (
             <div className="container">
                 <p> Conteúdo dos Posts</p>
@@ -80,6 +88,52 @@ class PostList extends Component {
                         ))}
                     </div>
                 )}
+                <a onClick={this.openModalPost} className="float">
+                    <FontAwesome.FaPlus className="my-float" size={25} />
+                </a>
+                <Modal 
+                    className='modal-post'
+                    overlayClassName='overlay'
+                    isOpen={newPostModalOpen}
+                    onRequestClose={this.closeModalPost}
+                    contentLabel="modal"
+                >
+                <div className="container">
+                  <form>
+                    <p className="h4 text-center mb-4">Novo Post</p>
+  
+                    <div className="md-form">
+                        <Material.MdTitle size={25} className="prefix grey-text" />
+                        <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
+                        <label htmlFor="materialFormRegisterNameEx">Title Post</label>
+                    </div>
+  
+                    <div className="md-form">
+                        <Material.MdTextsms size={25} className="prefix grey-text" />
+                        <label htmlFor="form7">Content</label>
+                        <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
+                        
+                    </div>
+  
+                    <div className="md-form">
+                        <Material.MdPerson size={25} className="prefix grey-text" />
+                        <input type="text" ref={(author) => this.author = author} id="materialFormRegisterConfirmEx" className="form-control" required/>
+                        <label htmlFor="materialFormRegisterConfirmEx">Author</label>
+                    </div>
+                    <div className="form-control">
+                    <label htmlFor="select">Select list:</label>
+                      <select className="form-control" id="select" ref={(select) => this.select = select}>
+                          { categories.map( category => (
+                              <option key={category.name}>{category.name}</option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="text-center mt-4">
+                        <a onClick={() => this.addPost()} target="_self" className="btn btn-primary">Register</a>
+                    </div>
+                  </form>
+                </div>
+            </Modal>
             </div>
         )
     }
@@ -103,7 +157,7 @@ function mapStateToProps(posts, categories) {
     })*/
     //console.log(props)
     //console.log(category.content)
-    console.log(posts)
+    //console.log(posts)
     return { posts, categories }
 }
 

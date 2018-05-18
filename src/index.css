@@ -114,11 +114,11 @@ body{
 }
 
 .modal-post {
-  position: absolute;
-  top: 25%;
-  left: 20%;
-  right: 20%;
-  bottom: 20%;
+  max-height: calc(100% - 100px);
+  position: fixed;
+    top: 50%;
+    left: 50%;
+  transform: translate(-50%, -50%);
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255);
   overflow: auto;

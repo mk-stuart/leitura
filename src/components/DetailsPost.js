@@ -1,24 +1,46 @@
 import React, { Component } from 'react'
 import * as FontAwesome from 'react-icons/lib/fa'
+import * as Material from 'react-icons/lib/md'
 import { connect } from 'react-redux'
 import * as LeituraApi from '../utils/api'
 //import * as Actions from '../actions'
 import { loadComments, loadPost } from '../actions'
 import { capitalize, guid } from '../utils/helpers'
 import iconUser from '../imgs/icon-user.png'
+import Modal from 'react-modal'
+
 class DetailsPost extends Component {
+
+    constructor(){
+        super()
+        this.afterOpenModal = this.afterOpenModal.bind(this)
+    }
 
     state = {
         id: '',
-        comment: '',
-        author: ''
+        content: '',
+        title: '',
+        newPostModalOpen: false
     }
-
+    openModalPost = () => {
+        this.setState(() => ({
+          newPostModalOpen: true
+        }))
+    }
+    closeModalPost = () =>{
+        this.setState(() => ({
+          newPostModalOpen: false
+        }))
+    }
+    afterOpenModal() {
+        /*this.title.value = 'EU ESCREVI ISSO HEHEHEHEHE'
+        console.log(this.title.title)*/
+    }
     getAllComments() {
         const { id_post } = this.props.content.params
         const { loadComments } = this.props
         LeituraApi.getPostComments(id_post).then((result) => {
-            //console.log(result)
+            console.log(result)
             loadComments(result)
         })
     }
@@ -56,13 +78,6 @@ class DetailsPost extends Component {
             this.clearFormComment()
         })
     }
-    onChangeStateComment = (e) => {
-        console.log(e)
-        //this.setState({ comment: value })
-    }
-    onChangeStateAuthor = (e, {value}) => {
-        this.setState({ author: value })
-    }
     clearFormComment(){
         this.comment.value = ''
         this.author.value = ''
@@ -70,7 +85,7 @@ class DetailsPost extends Component {
     render() {
         const comments = this.props.post.comments
         const post = this.props.post.post
-        const { comment, author } = this.state
+        const { comment, author, newPostModalOpen } = this.state
         return (
             <div className="container">
                 <p> Conteúdo dos Comentários</p>
@@ -95,7 +110,7 @@ class DetailsPost extends Component {
                                             <div className="d-flex flex-row float-left">
                                                 <a className="p-2" onClick={() => this.votePost(post.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
                                                 <a className="p-2" onClick={() => this.votePost(post.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
-                                                <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
+                                                <a className="p-2" onClick={this.openModalPost} data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
                                                 <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></a>
                                             </div>
                                             <div className="float-right font-weight-bold">
@@ -157,6 +172,33 @@ class DetailsPost extends Component {
                         </div>
                     </nav>
                 </footer>
+                <Modal 
+                    className='modal-post'
+                    overlayClassName='overlay'
+                    onAfterOpen={this.afterOpenModal}
+                    isOpen={newPostModalOpen}
+                    onRequestClose={this.closeModalPost}
+                    contentLabel="modal"
+                >
+                <div className="container">
+                  <form>
+                    <p className="h4 text-center mb-4">Edit Post</p>
+                    <div className="md-form">
+                        <Material.MdTitle size={25} className="prefix grey-text" />
+                        <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
+                        <label htmlFor="materialFormRegisterNameEx">Title Post</label>
+                    </div>
+                    <div className="md-form">
+                        <Material.MdTextsms size={25} className="prefix grey-text" />
+                        <label htmlFor="form7">Content</label>
+                        <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
+                    </div>
+                    <div className="text-center mt-4">
+                        <a onClick={() => this.addComment()} target="_self" className="btn btn-primary">Register</a>
+                    </div>
+                  </form>
+                </div>
+            </Modal>
             </div>
         )
     }
