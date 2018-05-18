@@ -4,14 +4,15 @@ import '../index.css';
 import PostList from './PostList'
 import DetailsPost from './DetailsPost'
 import PostNew from './PostNew'
-import { getAllCategories } from '../utils/api'
+import { getAllCategories , addPost } from '../utils/api'
 import { loadCategories } from '../actions'
 //import NavbarCategories from './navbarCategories'
 import { connect } from 'react-redux'
-import { capitalize } from '../utils/helpers'
+import { capitalize , guid } from '../utils/helpers'
 import { Route, Link, BrowserRouter } from 'react-router-dom'
 import Modal from 'react-modal'
 import * as Material from 'react-icons/lib/md'
+import * as FontAwesome from 'react-icons/lib/fa'
 
 class App extends Component {
   state = {
@@ -35,6 +36,22 @@ class App extends Component {
   }
   componentDidMount(){
     this.getCategories()
+  }
+  addPost(){
+    console.log(this.title.value, this.body.value, this.author.value, this.select.value)
+    addPost(guid(), Date.now(), this.title.value, this.body.value, this.author.value, this.select.value).then((result) =>{
+      this.closeModalPost()
+      this.getCategories()
+      console.log(result)
+      //this.clearFormPost()
+    })
+  }
+
+  clearFormPost(){
+    this.title.value = ''
+    this.body.value = ''
+    this.select.value = ''
+    this.author.value = ''
   }
   render() {
     const { newPostModalOpen } = this.state
@@ -69,23 +86,32 @@ class App extends Component {
 
                   <div className="md-form">
                       <Material.MdTitle size={25} className="prefix grey-text" />
-                      <input type="text" id="materialFormRegisterNameEx" className="form-control"/>
+                      <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control"/>
                       <label htmlFor="materialFormRegisterNameEx">Title Post</label>
                   </div>
 
                   <div className="md-form">
                       <Material.MdTextsms size={25} className="prefix grey-text" />
-                      <textarea type="text" id="form7" class="md-textarea form-control" rows="3"></textarea>
-                      <label for="form7">Content</label>
+                      <label htmlFor="form7">Content</label>
+                      <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3"></textarea>
+                      
                   </div>
 
                   <div className="md-form">
                       <Material.MdPerson size={25} className="prefix grey-text" />
-                      <input type="email" id="materialFormRegisterConfirmEx" className="form-control"/>
+                      <input type="email" ref={(author) => this.author = author} id="materialFormRegisterConfirmEx" className="form-control"/>
                       <label htmlFor="materialFormRegisterConfirmEx">Author</label>
                   </div>
+                  <div className="form-control">
+                  <label htmlFor="select">Select list:</label>
+                    <select className="form-control" id="select" ref={(select) => this.select = select}>
+                        { categories.map( category => (
+                            <option key={category.name}>{category.name}</option>
+                        ))}
+                    </select>
+                  </div>
                   <div className="text-center mt-4">
-                      <button className="btn btn-primary" type="submit">Register</button>
+                      <button onClick={() => this.addPost()} className="btn btn-primary" type="submit">Register</button>
                   </div>
                 </form>
               </div>
@@ -95,8 +121,8 @@ class App extends Component {
           <Route path="/" exact render ={() => (
             <div>
               <PostList content={null} />
-              <a onClick={this.openModalPost} className="float bg-dark">
-                <i className="fa fa-plus my-float"></i>
+              <a onClick={this.openModalPost} className="float">
+                <FontAwesome.FaPlus className="my-float" size={25} />
               </a>
             </div>
           )} />
