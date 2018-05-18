@@ -106,9 +106,6 @@ function mapStateToProps(posts, categories) {
     console.log(posts)
     return { posts, categories }
 }
-/*const mapStateToProps = state => ({
-    posts : state.posts
-})*/
 
 function mapDispatchToProps(dispatch) {
     return {

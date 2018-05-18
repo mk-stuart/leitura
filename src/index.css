@@ -115,10 +115,10 @@ body{
 
 .modal-post {
   position: absolute;
-  top: 40px;
-  left: 200px;
-  right: 200px;
-  bottom: 40px;
+  top: 25%;
+  left: 20%;
+  right: 20%;
+  bottom: 20%;
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255);
   overflow: auto;

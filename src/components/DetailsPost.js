@@ -51,7 +51,6 @@ class DetailsPost extends Component {
     }
     addComment(){
         const { post } = this.props.post
-        console.log(post)
         LeituraApi.addComment(guid(), Date.now(), this.comment.value, this.author.value, post.id).then((result) => {
             this.getAllComments()
             this.clearFormComment()
