@@ -18,7 +18,7 @@ class DetailsPost extends Component {
 
     state = {
         id: '',
-        content: '',
+        body: '',
         title: '',
         newPostModalOpen: false
     }
@@ -33,8 +33,30 @@ class DetailsPost extends Component {
         }))
     }
     afterOpenModal() {
-        /*this.title.value = 'EU ESCREVI ISSO HEHEHEHEHE'
-        console.log(this.title.title)*/
+        this.title.value = this.state.title
+        this.body.value = this.state.body
+    }
+    changePost(id, title, body){
+        this.setState(() => ({
+            id: id,
+            title: title,
+            body: body
+        }))
+        this.openModalPost()
+    }
+    editPost(){
+        let title = this.title.value
+        let body = this.body.value
+        let id = this.state.id
+        LeituraApi.editPost(id, title, body).then((result) => {
+            this.getPost()
+        })
+        this.setState(() => ({
+            id: '',
+            title: '',
+            body: ''
+        }))
+        this.closeModalPost()
     }
     getAllComments() {
         const { id_post } = this.props.content.params
@@ -110,7 +132,7 @@ class DetailsPost extends Component {
                                             <div className="d-flex flex-row float-left">
                                                 <a className="p-2" onClick={() => this.votePost(post.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
                                                 <a className="p-2" onClick={() => this.votePost(post.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
-                                                <a className="p-2" onClick={this.openModalPost} data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
+                                                <a className="p-2" onClick={() => this.changePost(post.id, post.title, post.body)} data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
                                                 <a className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></a>
                                             </div>
                                             <div className="float-right font-weight-bold">
@@ -194,7 +216,7 @@ class DetailsPost extends Component {
                         <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
                     </div>
                     <div className="text-center mt-4">
-                        <a onClick={() => this.addComment()} target="_self" className="btn btn-primary">Register</a>
+                        <a onClick={() => this.editPost()} target="_self" className="btn btn-primary">Confirm</a>
                     </div>
                   </form>
                 </div>
