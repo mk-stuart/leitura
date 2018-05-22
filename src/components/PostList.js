@@ -8,9 +8,31 @@ import { capitalize, guid } from '../utils/helpers'
 import Modal from 'react-modal'
 
 class PostList extends Component {
-    state = {
-        newPostModalOpen: false
+    constructor(){
+        super()
+        this.afterOpenModal = this.afterOpenModal.bind(this)
     }
+    state = {
+        id: '',
+        title: '',
+        body: '',
+        newPostModalOpen: false,
+        editPostModalOpen: false
+    }
+    openModalEditPost = () => {
+        this.setState(() => ({
+            editPostModalOpen: true
+        }))
+    }
+    closeModalEditPost = () => {
+        this.setState(() => ({
+            editPostModalOpen: false
+        }))
+    }
+    afterOpenModal() {
+        this.title.value = this.state.title
+        this.body.value = this.state.body
+    }            
     openModalPost = () => {
         this.setState(() => ({
           newPostModalOpen: true
@@ -20,6 +42,33 @@ class PostList extends Component {
         this.setState(() => ({
           newPostModalOpen: false
         }))
+    }
+    changePost(id, title, body){
+        this.setState(() => ({
+            id: id,
+            title: title,
+            body: body
+        }))
+        this.openModalEditPost()
+    }
+    deletePost(id){
+        LeituraApi.deletePost(id).then((result) => {
+            this.componentDidMount()
+        })
+    }
+    editPost(){
+        let title = this.title.value
+        let body = this.body.value
+        let id = this.state.id
+        LeituraApi.editPost(id, title, body).then((result) => {
+            this.componentDidMount()
+        })
+        this.setState(() => ({
+            id: '',
+            title: '',
+            body: ''
+        }))
+        this.closeModalEditPost()
     }
     addPost(){      
         LeituraApi.addPost(guid(), Date.now(), this.title.value, this.body.value, this.author.value, this.select.value).then((result) =>{
@@ -40,13 +89,7 @@ class PostList extends Component {
         })
     }
     componentDidMount() {
-        let category = this.props.content
-        if ( category === null){
-            this.getAllPosts()
-        } else {
-            category = this.props.content.params.category
-            this.getAllPostsCategory(category)
-        }
+        this.getAllPosts()
     }
 
     votePost(id, vote){
@@ -55,16 +98,17 @@ class PostList extends Component {
         })
     }
     render() {
-        const { newPostModalOpen } = this.state
-        const {posts} = this.props
-        const { categories } = this.props.posts
-        console.log(categories)
+
+        const { newPostModalOpen, editPostModalOpen } = this.state
+        const { posts, categories } = this.props
+        //const { categories } = this.props.posts
+        
+        console.log(posts)
         return (
-            <div className="container">
-                <p> Conteúdo dos Posts</p>
-                {posts.posts.length > 0 && (
+            <div className="container margin-container-top">
+                {posts.length > 0 && (
                     <div>
-                        {posts.posts.map(result => (
+                        {posts.map(result => (
                             <div key={result.id} className="card">
                                 <div className="card-header font-weight-bold">
                                     <h4 className="float-left">{capitalize(result.category)}</h4>
@@ -80,14 +124,41 @@ class PostList extends Component {
                                     <div className="d-flex flex-row">
                                         <a className="p-2" onClick={() => this.votePost(result.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
                                         <a className="p-2" onClick={() => this.votePost(result.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
-                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></div>
-                                        <div className="p-2" data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></div>
+                                        <a className="p-2" onClick={() => this.changePost(result.id, result.title, result.body)} data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
+                                        <a className="p-2" onClick={() => this.deletePost(result.id)} data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></a>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 )}
+                <Modal 
+                className='modal-post'
+                overlayClassName='overlay'
+                onAfterOpen={this.afterOpenModal}
+                isOpen={editPostModalOpen}
+                onRequestClose={this.closeModalEditPost}
+                contentLabel="modal"
+                >
+                    <div className="container">
+                    <form>
+                        <p className="h4 text-center mb-4">Edit Post</p>
+                        <div className="md-form">
+                            <Material.MdTitle size={25} className="prefix grey-text" />
+                            <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
+                            <label htmlFor="materialFormRegisterNameEx">Title Post</label>
+                        </div>
+                        <div className="md-form">
+                            <Material.MdTextsms size={25} className="prefix grey-text" />
+                            <label htmlFor="form7">Content</label>
+                            <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
+                        </div>
+                        <div className="text-center mt-4">
+                            <a onClick={() => this.editPost()} target="_self" className="btn btn-primary">Confirm</a>
+                        </div>
+                    </form>
+                    </div>
+                </Modal>
                 <a onClick={this.openModalPost} className="float">
                     <FontAwesome.FaPlus className="my-float" size={25} />
                 </a>
@@ -138,24 +209,14 @@ class PostList extends Component {
         )
     }
 }
-function mapStateToProps(posts, categories) {
-   /* if (categories.content && posts.posts.length > 0){
-        posts.posts = posts.posts.filter(e => e.category === categories.content.params.category)
-        //debugger
-        //console.log("postgroup")
-        //console.log(postGroup)
+function mapStateToProps( {posts, categories}, props) {
+    if(props.content){
+        console.log('PROPS CONTENT')
+        console.log(props.content)
+        posts = posts.filter(e => e.category === props.content.params.category)
     }
-    /*if (category.content && posts.posts.length > 0){
-        posts.posts = posts.posts.filter(e => e.category === category.content.params.category)
-        //debugger
-        //console.log("postgroup")
-        //console.log(postGroup)
-    }
-    
-    /*const _category = category.content.map(data => {
-        return {value:data.name, text: capitalize(data.path)}
-    })*/
-    //console.log(props)
+    //console.log('props')
+    //console.log(categories)
     //console.log(category.content)
     //console.log(posts)
     return { posts, categories }

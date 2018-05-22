@@ -69,6 +69,24 @@ export const addComment = (id, timestamp, body, author, parentId) =>
     })
   }).then(res => res.json())
 
+export const editComment = (id, body, timestamp) =>
+  fetch(`${api}/comments/${id}`,{
+    method: "PUT",
+    headers,
+    body: JSON.stringify({
+      timestamp: timestamp,
+      body: body
+    })
+  })
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, { 
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({
+      deleted: true
+    }) 
+  }).then(res => res.json())
+  
 export const addPost = (id, timestamp, title, body, author, category) =>
   fetch(`${api}/posts`, {
     method: "POST",
@@ -92,3 +110,12 @@ export const editPost = (id, title, body) =>
       body: body
     })
   })
+export const deletePost = (id) =>
+  fetch(`${api}/posts/${id}`, { 
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({
+      deleted: true,
+      parentDeleted: true
+    }) 
+  }).then(res => res.json())
