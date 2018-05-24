@@ -5,6 +5,7 @@ import {
     LOAD_CATEGORIES,
     LOAD_COMMENTS,
     LOAD_POST,
+    ORDER_POST
 } from '../actions'
 
 function categories (state = [], action){
@@ -43,6 +44,14 @@ function comments (state = [], action){
             return state
     }
 }
+function order (state = {}, action){
+    switch (action.type) {
+        case ORDER_POST:
+            return action.order
+        default:
+            return state
+    }
+}
 export default combineReducers({
-    post, posts, categories, comments
+    post, posts, categories, comments, order
 })

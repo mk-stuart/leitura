@@ -2,6 +2,7 @@ export const LOAD_POSTS = 'LOAD_POSTS'
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const LOAD_COMMENTS = 'LOAD_COMMENTS'
 export const LOAD_POST = 'LOAD_POST'
+export const ORDER_POST = 'ORDER_POST'
 
 export function loadPosts (posts){
     return {
@@ -31,3 +32,9 @@ export function loadPost (post){
     }
 }
 
+export function orderPost (order){
+    return {
+        type: ORDER_POST,
+        order
+    }
+}

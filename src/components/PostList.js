@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import * as FontAwesome from 'react-icons/lib/fa'
 import * as Material from 'react-icons/lib/md'
+import * as Octicons from 'react-icons/lib/go'
 import { connect } from 'react-redux'
 import * as LeituraApi from '../utils/api'
-import { loadPosts } from '../actions'
+import { loadPosts, orderPost } from '../actions'
 import { capitalize, guid } from '../utils/helpers'
 import Modal from 'react-modal'
 
@@ -97,15 +98,24 @@ class PostList extends Component {
             this.getAllPosts()
         })
     }
+    order(orderNow){
+        const { orderPost } = this.props
+        orderPost({order: orderNow})
+    }
     render() {
 
         const { newPostModalOpen, editPostModalOpen } = this.state
         const { posts, categories } = this.props
-        //const { categories } = this.props.posts
         
-        console.log(posts)
+        console.log(this.props)
         return (
             <div className="container margin-container-top">
+                <a onClick={() => this.order(`orderAsc`)} className="float-orderAsc">
+                    <Octicons.GoListOrdered className="my-float" size={25} />
+                </a>
+                <a onClick={() => this.order(`orderDesc`)} className="float-orderDesc">
+                    <Octicons.GoListUnordered className="my-float" size={25} />
+                </a>                
                 {posts.length > 0 && (
                     <div>
                         {posts.map(result => (
@@ -209,13 +219,22 @@ class PostList extends Component {
         )
     }
 }
-function mapStateToProps( {posts, categories}, props) {
+const orderPostDesc = (posts, order) =>{
+    console.log(posts)
+    console.log('order')
+    console.log(order)
+    return posts
+}
+function mapStateToProps( {posts, categories, order}, props) {
+    posts = orderPostDesc(posts, order)
     if(props.content){
         console.log('PROPS CONTENT')
         console.log(props.content)
         posts = posts.filter(e => e.category === props.content.params.category)
     }
+    
     //console.log('props')
+    //console.log(props)
     //console.log(categories)
     //console.log(category.content)
     //console.log(posts)
@@ -224,7 +243,8 @@ function mapStateToProps( {posts, categories}, props) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadPosts: (data) => dispatch(loadPosts(data))
+        loadPosts: (data) => dispatch(loadPosts(data)),
+        orderPost: (data) => dispatch(orderPost(data))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PostList)
