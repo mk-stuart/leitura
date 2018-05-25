@@ -8,7 +8,7 @@ import { loadCategories } from '../actions'
 //import NavbarCategories from './navbarCategories'
 import { connect } from 'react-redux'
 import { capitalize } from '../utils/helpers'
-import { Route, Link, BrowserRouter, Switch} from 'react-router-dom'
+import { Route, Link, BrowserRouter} from 'react-router-dom'
 import Modal from 'react-modal'
 
 class App extends Component {
@@ -30,7 +30,7 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <nav className="navbar fixed-top navbar-expand-sm bg-dark navbar-dark">
-            <img src={logo}/>
+            <img src={logo} alt='logo'/>
               { categories.length > 0 && (
                   <ul className="navbar-nav">
                       <Link to="/" className="nav-link"> Home </Link>

@@ -107,7 +107,6 @@ class PostList extends Component {
         const { newPostModalOpen, editPostModalOpen } = this.state
         const { posts, categories } = this.props
         
-        console.log(this.props)
         return (
             <div className="container margin-container-top">
                 <a onClick={() => this.order(`orderAsc`)} className="float-orderAsc">
@@ -219,25 +218,32 @@ class PostList extends Component {
         )
     }
 }
-const orderPostDesc = (posts, order) =>{
-    console.log(posts)
-    console.log('order')
-    console.log(order)
+/* desc */
+Array.prototype.sortByDesc = function(p) {
+    return this.slice(0).sort(function(a,b) {
+      return (a[p] < b[p]) ? 1 : (a[p] > b[p]) ? -1 : 0;
+    });
+}
+/* asc */
+Array.prototype.sortByAsc = function(p) {
+    return this.slice(0).sort(function(a,b) {
+      return (a[p] > b[p]) ? 1 : (a[p] < b[p]) ? -1 : 0;
+    });
+}
+const orderPostDesc = (posts, orderType) =>{
+    if (orderType.order === 'orderDesc'){
+        posts = posts.sortByDesc('voteScore')
+    } 
+    if (orderType.order === 'orderAsc'){
+        posts = posts.sortByAsc('voteScore')
+    }
     return posts
 }
 function mapStateToProps( {posts, categories, order}, props) {
     posts = orderPostDesc(posts, order)
     if(props.content){
-        console.log('PROPS CONTENT')
-        console.log(props.content)
         posts = posts.filter(e => e.category === props.content.params.category)
     }
-    
-    //console.log('props')
-    //console.log(props)
-    //console.log(categories)
-    //console.log(category.content)
-    //console.log(posts)
     return { posts, categories }
 }
 

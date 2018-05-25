@@ -53,13 +53,6 @@ class DetailsPost extends Component {
         this.title.value = this.state.title
         this.body.value = this.state.body
     }
-    changeComment(id, body){
-        this.setState(() => ({
-            id: id,
-            body: body
-        }))
-        this.openModalComment()
-    }
     changePost(id, title, body){
         this.setState(() => ({
             id: id,
@@ -147,10 +140,11 @@ class DetailsPost extends Component {
     }
     addComment(){
         const { post } = this.props
-        LeituraApi.addComment(guid(), Date.now(), this.comment.value, this.author.value, post.id).then((result) => {
+        /*LeituraApi.addComment(guid(), Date.now(), this.comment.value, this.author.value, post.id).then((result) => {
             this.getAllComments()
             this.clearFormComment()
-        })
+        })*/
+        console.log(this.author.validity)
     }
     clearFormComment(){
         this.comment.value = ''
@@ -200,17 +194,21 @@ class DetailsPost extends Component {
                                 </div>
                                 <footer>
                                     <nav className="navbar fixed-bottom footer">
-                                        <div className="row text-center">
-                                            <div className="col-lg-7 col-7">
-                                                <input type="text" name="comment" ref={(comment) => this.comment = comment} className="form-control" placeholder="write comments ..." />
+                                        
+                                            <div className="container">
+                                                
+                                                <div className="comments-input">
+                                                    <input type="text" required name="comment" ref={(comment) => this.comment = comment} className="form-control" placeholder="write comments ..." />
+                                                </div>
+                                                <div className="">
+                                                    <input type="text" required name="author" ref={(author) => this.author = author} className="form-control" placeholder="Author..." />
+                                                </div>
+                                                <div className="col-1 send-icon">
+                                                    <a role="button" onClick={() => this.addComment()} target="_blank"><i className="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                                </div>
+                                                
                                             </div>
-                                            <div className="col-lg-3 col-3">
-                                                <input type="text" name="author" ref={(author) => this.author = author} className="form-control" placeholder="Author..." />
-                                            </div>
-                                            <div className="col-lg-1 col-1 send-icon">
-                                                <a onClick={() => this.addComment()} target="_blank"><i className="fa fa-paper-plane" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
+                                        
                                     </nav>
                                 </footer>
                         </div>
@@ -225,7 +223,7 @@ class DetailsPost extends Component {
                                         <div className="card-body">
                                             <div className="row">
                                                 <div className="col-lg-1 text-center">
-                                                    <img src={iconUser} className="main-cmt-img mx-auto d-block"/>
+                                                    <img src={iconUser} className="main-cmt-img mx-auto d-block" alt='user'/>
                                                     <span className="author-comment">{capitalize(comment.author)}</span>
                                                 </div>
                                                 <div className="col-lg-11">

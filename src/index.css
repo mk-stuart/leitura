@@ -55,7 +55,7 @@ body{
 .send-icon i{
 	font-size: 20px;
 	background: #f3f3f3;
-	padding: 6px 5px;
+	padding: 7px 7px;
 	border-radius: 50%;
 	color: #74C2E1;
 	height: 35px;
@@ -78,6 +78,9 @@ body{
 /*.form-inline{
   width: 100%;
 }*/
+.comments-input{
+	width: 72%
+}
 .padding-right-small{
   padding-right: 1em
 }
