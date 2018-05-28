@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.0",
+    "fontawesome": "^4.7.2",
     "jquery": "^1.9.1",
-    "mdbreact": "^4.3.0",
     "react": "^16.3.1",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.3.1",

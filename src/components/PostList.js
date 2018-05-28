@@ -71,11 +71,15 @@ class PostList extends Component {
         }))
         this.closeModalEditPost()
     }
-    addPost(){      
-        LeituraApi.addPost(guid(), Date.now(), this.title.value, this.body.value, this.author.value, this.select.value).then((result) =>{
-            this.componentDidMount()
-            this.closeModalPost()
-        })
+    addPost(){
+        if(this.title.validity.valid === true && this.body.validity.valid === true && this.author.validity.valid === true){
+            LeituraApi.addPost(guid(), Date.now(), this.title.value, this.body.value, this.author.value, this.select.value).then((result) =>{
+                this.componentDidMount()
+                this.closeModalPost()
+            })
+        } else {
+            return alert('Preencha o campo título, conteúdo ou autor ')
+        }
     }
     getAllPosts() {
         const { loadPosts } = this.props
@@ -154,8 +158,9 @@ class PostList extends Component {
                         <p className="h4 text-center mb-4">Edit Post</p>
                         <div className="md-form">
                             <Material.MdTitle size={25} className="prefix grey-text" />
-                            <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
                             <label htmlFor="materialFormRegisterNameEx">Title Post</label>
+                            <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
+                            
                         </div>
                         <div className="md-form">
                             <Material.MdTextsms size={25} className="prefix grey-text" />
@@ -182,23 +187,25 @@ class PostList extends Component {
                   <form>
                     <p className="h4 text-center mb-4">Novo Post</p>
   
-                    <div className="md-form">
+                    <div className="form-group">
                         <Material.MdTitle size={25} className="prefix grey-text" />
-                        <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
                         <label htmlFor="materialFormRegisterNameEx">Title Post</label>
+                        <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
+                        
                     </div>
   
-                    <div className="md-form">
+                    <div className="form-group">
                         <Material.MdTextsms size={25} className="prefix grey-text" />
                         <label htmlFor="form7">Content</label>
                         <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
                         
                     </div>
   
-                    <div className="md-form">
+                    <div className="form-group">
                         <Material.MdPerson size={25} className="prefix grey-text" />
-                        <input type="text" ref={(author) => this.author = author} id="materialFormRegisterConfirmEx" className="form-control" required/>
                         <label htmlFor="materialFormRegisterConfirmEx">Author</label>
+                        <input type="text" ref={(author) => this.author = author} id="materialFormRegisterConfirmEx" className="form-control" required/>
+                        
                     </div>
                     <div className="form-control">
                     <label htmlFor="select">Select list:</label>

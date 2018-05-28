@@ -52,10 +52,10 @@ body{
 	display: inline-block;
 	float: none;
 }
-.send-icon i{
-	font-size: 20px;
+.send-icon svg{
+	/*font-size: 20px;*/
 	background: #f3f3f3;
-	padding: 7px 7px;
+	padding: 0px 7px;
 	border-radius: 50%;
 	color: #74C2E1;
 	height: 35px;
@@ -144,7 +144,7 @@ body{
 .modal-post {
   max-height: calc(100% - 100px);
   position: fixed;
-    top: 50%;
+    top: 53%;
     left: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid rgb(204, 204, 204);
@@ -152,7 +152,7 @@ body{
   overflow: auto;
   border-radius: 4px;
   outline: none;
-  padding: 20px;
+  padding: 15px;
   border-radius: 3px;
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
   min-width: 500px;

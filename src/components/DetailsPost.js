@@ -140,11 +140,14 @@ class DetailsPost extends Component {
     }
     addComment(){
         const { post } = this.props
-        /*LeituraApi.addComment(guid(), Date.now(), this.comment.value, this.author.value, post.id).then((result) => {
-            this.getAllComments()
-            this.clearFormComment()
-        })*/
-        console.log(this.author.validity)
+        if (this.comment.validity.valid === true && this.author.validity.valid) {
+            LeituraApi.addComment(guid(), Date.now(), this.comment.value, this.author.value, post.id).then((result) => {
+                this.getAllComments()
+                this.clearFormComment()
+            })
+        } else {
+            return alert('Preencha o campo comentário ou autor')
+        }
     }
     clearFormComment(){
         this.comment.value = ''
@@ -194,7 +197,6 @@ class DetailsPost extends Component {
                                 </div>
                                 <footer>
                                     <nav className="navbar fixed-bottom footer">
-                                        
                                             <div className="container">
                                                 
                                                 <div className="comments-input">
@@ -204,11 +206,10 @@ class DetailsPost extends Component {
                                                     <input type="text" required name="author" ref={(author) => this.author = author} className="form-control" placeholder="Author..." />
                                                 </div>
                                                 <div className="col-1 send-icon">
-                                                    <a role="button" onClick={() => this.addComment()} target="_blank"><i className="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                                    <a onClick={() => this.addComment()}><FontAwesome.FaPaperPlane size={18} /></a>
                                                 </div>
                                                 
                                             </div>
-                                        
                                     </nav>
                                 </footer>
                         </div>
@@ -261,18 +262,19 @@ class DetailsPost extends Component {
                     <div className="container">
                     <form>
                         <p className="h4 text-center mb-4">Edit Post</p>
-                        <div className="md-form">
+                        <div className="form-group">
                             <Material.MdTitle size={25} className="prefix grey-text" />
-                            <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
                             <label htmlFor="materialFormRegisterNameEx">Title Post</label>
+                            <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
+                            
                         </div>
-                        <div className="md-form">
+                        <div className="form-group">
                             <Material.MdTextsms size={25} className="prefix grey-text" />
                             <label htmlFor="form7">Content</label>
                             <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
                         </div>
                         <div className="text-center mt-4">
-                            <a onClick={() => this.editPost()} target="_self" className="btn btn-primary">Confirm</a>
+                            <a  onClick={() => this.editPost()} target="_self" className="btn btn-primary">Confirm</a>
                         </div>
                     </form>
                     </div>
@@ -288,13 +290,13 @@ class DetailsPost extends Component {
                 <div className="container">
                     <form>
                         <p className="h4 text-center mb-4">Edit Comment</p>
-                        <div className="md-form">
+                        <div className="form-group">
                             <Material.MdTextsms size={25} className="prefix grey-text" />
                             <label htmlFor="form7">Content</label>
                             <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
                         </div>
                         <div className="text-center mt-4">
-                            <a onClick={() => this.editComment()} target="_self" className="btn btn-primary">Confirm</a>
+                            <a role="button" onClick={() => this.editComment()} target="_self" className="btn btn-primary">Confirm</a>
                         </div>
                     </form>                    
                 </div>
