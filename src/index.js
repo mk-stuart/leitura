@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const logger = store => next => action => {
+/*const logger = store => next => action => {
     console.group(action.type)
     console.info('dispatching', action)
     let result = next(action)
@@ -17,13 +17,13 @@ const logger = store => next => action => {
     console.groupEnd(action.type)
     return result
   }
-  
+ LOGGER */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   
 const store = createStore(
     reducer,
     composeEnhancers(
-      applyMiddleware(logger)
+      applyMiddleware(thunk)
     )
 )
 

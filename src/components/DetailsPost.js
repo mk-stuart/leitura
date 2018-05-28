@@ -102,7 +102,6 @@ class DetailsPost extends Component {
         const { id_post } = this.props.content.params
         const { loadComments } = this.props
         LeituraApi.getPostComments(id_post).then((result) => {
-            console.log(result)
             loadComments(result)
         })
     }
@@ -110,7 +109,6 @@ class DetailsPost extends Component {
         const { id_post } = this.props.content.params
         const { loadPost } = this.props
         LeituraApi.getPost(id_post).then((result) => {
-            console.log(result)
             loadPost(result)
         })
     }
@@ -154,13 +152,8 @@ class DetailsPost extends Component {
         this.author.value = ''
     }    
     render() {
-        //const comments = this.props.post.comments
-        //const post = this.props.post.post
-        console.log(this.props)
         const { post, comments } = this.props
         const { postModalOpen, commentModalOpen } = this.state
-        console.log('POST')
-        console.log(post)
         if(this.state.redirect === true){
             return <Redirect to="/"/>
         }
