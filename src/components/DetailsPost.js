@@ -6,10 +6,11 @@ import * as LeituraApi from '../utils/api'
 //import * as Actions from '../actions'
 import { loadComments, loadPost } from '../actions'
 import { capitalize, guid } from '../utils/helpers'
-import iconUser from '../imgs/icon-user.png'
-import Modal from 'react-modal'
 import { Redirect } from 'react-router-dom'
 import Erro404 from './404'
+import DetailsPostComment from './DetailsPostComment'
+import FormModalPost from './formModalPost'
+
 class DetailsPost extends Component {
 
     constructor(){
@@ -61,7 +62,7 @@ class DetailsPost extends Component {
         }))
         this.openModalPost()
     }
-    changeComment(id, body){
+    changeComment = (id, body) =>{
         this.setState(() => ({
             id: id,
             body: body
@@ -98,14 +99,14 @@ class DetailsPost extends Component {
             }))
         })
     }   
-    getAllComments() {
+    getAllComments = () => {
         const { id_post } = this.props.content.params
         const { loadComments } = this.props
         LeituraApi.getPostComments(id_post).then((result) => {
             loadComments(result)
         })
     }
-    getPost() {
+    getPost = () => {
         const { id_post } = this.props.content.params
         const { loadPost } = this.props
         LeituraApi.getPost(id_post).then((result) => {
@@ -121,7 +122,7 @@ class DetailsPost extends Component {
         datePost = `${datePost.getDate()}/${datePost.getMonth()+1}/${datePost.getFullYear()}`
         return datePost
     }
-    voteComment(id, vote){
+    voteComment = (id, vote) => {
         LeituraApi.voteComment(id, vote).then((result) =>{
             this.getAllComments()
         })
@@ -131,15 +132,17 @@ class DetailsPost extends Component {
             this.getPost()
         })
     }
-    deleteComment(id){
+    deleteComment = (id) =>{
         LeituraApi.deleteComment(id).then((result) =>{
-            this.componentDidMount()
+            this.getPost()
+            this.getAllComments()
         })
     }
     addComment(){
         const { post } = this.props
         if (this.comment.validity.valid === true && this.author.validity.valid) {
             LeituraApi.addComment(guid(), Date.now(), this.comment.value, this.author.value, post.id).then((result) => {
+                this.getPost()
                 this.getAllComments()
                 this.clearFormComment()
             })
@@ -153,6 +156,7 @@ class DetailsPost extends Component {
     }    
     render() {
         const { post, comments } = this.props
+        console.log( post , comments )
         const { postModalOpen, commentModalOpen } = this.state
         if(this.state.redirect === true){
             return <Redirect to="/"/>
@@ -205,95 +209,22 @@ class DetailsPost extends Component {
                                             </div>
                                     </nav>
                                 </footer>
+                                <DetailsPostComment 
+                                    comments={comments}
+                                    deleteComment={this.deleteComment}
+                                    voteComment={this.voteComment}
+                                    changeComment={this.changeComment}
+                               /> 
                         </div>
                     )}
                 </div>
-                <div className="margin-bottom-card">
-                    <div className="col-lg-12">
-                        {comments.length > 0 && (
-                            <div>
-                                {comments.map(comment => (
-                                    <div key={comment.id} className="card">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-lg-1 text-center">
-                                                    <img src={iconUser} className="main-cmt-img mx-auto d-block" alt='user'/>
-                                                    <span className="author-comment">{capitalize(comment.author)}</span>
-                                                </div>
-                                                <div className="col-lg-11">
-                                                    
-                                                    <p className="card-text text-dark">{(comment.body)}</p>
-                                                    <p className="card-text">Sent: {this.datePost(comment.timestamp)}</p>
-        
-                                                    <div className="d-flex flex-row float-left">
-                                                        <a className="p-2" onClick={() => this.voteComment(comment.id, "upVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Up"><FontAwesome.FaThumbsOUp size={25} /></a>
-                                                        <a className="p-2" onClick={() => this.voteComment(comment.id, "downVote")} data-toggle="tooltip" data-placement="bottom" title="Vote Down :("><FontAwesome.FaThumbsODown size={25} /></a>
-                                                        <a className="p-2" onClick={() => this.changeComment(comment.id, comment.body)} data-toggle="tooltip" data-placement="bottom" title="Edit"><FontAwesome.FaEdit size={25} /></a>
-                                                        <a className="p-2" onClick={() => this.deleteComment(comment.id)} data-toggle="tooltip" data-placement="bottom" title="Delete"><FontAwesome.FaTrashO size={25} /></a>
-                                                    </div>
-                                                    <div className="float-right font-weight-bold">
-                                                        <p><span className="badge badge-primary badge-pill">{comment.voteScore}</span> Vote Score</p>
-                                                    </div>                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <Modal 
-                    className='modal-post'
-                    overlayClassName='overlay'
-                    onAfterOpen={this.afterOpenModal}
+                <FormModalPost
                     isOpen={postModalOpen}
-                    onRequestClose={this.closeModalPost}
-                    contentLabel="modal"
-                >
-                    <div className="container">
-                    <form>
-                        <p className="h4 text-center mb-4">Edit Post</p>
-                        <div className="form-group">
-                            <Material.MdTitle size={25} className="prefix grey-text" />
-                            <label htmlFor="materialFormRegisterNameEx">Title Post</label>
-                            <input type="text" ref={(title) => this.title = title} id="materialFormRegisterNameEx" className="form-control" required/>
-                            
-                        </div>
-                        <div className="form-group">
-                            <Material.MdTextsms size={25} className="prefix grey-text" />
-                            <label htmlFor="form7">Content</label>
-                            <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
-                        </div>
-                        <div className="text-center mt-4">
-                            <a  onClick={() => this.editPost()} target="_self" className="btn btn-primary">Confirm</a>
-                        </div>
-                    </form>
-                    </div>
-                </Modal>
-                <Modal 
-                    className='modal-post'
-                    overlayClassName='overlay'
-                    onAfterOpen={this.afterOpenModalComment}
-                    isOpen={commentModalOpen}
-                    onRequestClose={this.closeModalComment}
-                    contentLabel="modal"
-                >
-                <div className="container">
-                    <form>
-                        <p className="h4 text-center mb-4">Edit Comment</p>
-                        <div className="form-group">
-                            <Material.MdTextsms size={25} className="prefix grey-text" />
-                            <label htmlFor="form7">Content</label>
-                            <textarea type="text" ref={(body) => this.body = body} id="form7" className="md-textarea form-control" rows="3" required></textarea>
-                        </div>
-                        <div className="text-center mt-4">
-                            <a role="button" onClick={() => this.editComment()} target="_self" className="btn btn-primary">Confirm</a>
-                        </div>
-                    </form>                    
-                </div>
-                </Modal>
+                    state={this.state}
+                    afterOpenModal = {this.afterOpenModal}
+                    closeModalPost = {this.closeModalPost}
+                    editPost = {this.editPost}
+                />
                 {Object.keys(post).length === 0 && (
                     <div>
                         <Erro404 />
