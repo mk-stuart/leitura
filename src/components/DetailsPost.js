@@ -17,6 +17,7 @@ class DetailsPost extends Component {
         super()
         this.afterOpenModal = this.afterOpenModal.bind(this)
         this.afterOpenModalComment = this.afterOpenModalComment.bind(this)
+        this.editPost = this.editPost.bind(this)
     }
 
     state = {
@@ -78,7 +79,10 @@ class DetailsPost extends Component {
         })
         this.closeModalComment()
     }
-    editPost(){
+    editPost({id, title, body}){
+        console.log('cheguei no edit post')
+        console.log(this.props)
+        /*
         let title = this.title.value
         let body = this.body.value
         let id = this.state.id
@@ -90,7 +94,7 @@ class DetailsPost extends Component {
             title: '',
             body: ''
         }))
-        this.closeModalPost()
+        this.closeModalPost()*/
     }
     deletePost(id){
         LeituraApi.deletePost(id).then((result) => {
