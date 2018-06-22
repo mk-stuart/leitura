@@ -79,9 +79,9 @@ class DetailsPost extends Component {
         })
         this.closeModalComment()
     }
-    editPost({id, title, body}){
+    editPost = ({id, title, body}) =>{
         console.log('cheguei no edit post')
-        console.log(this.props)
+        console.log(id, title, body)
         /*
         let title = this.title.value
         let body = this.body.value
