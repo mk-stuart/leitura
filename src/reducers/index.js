@@ -5,7 +5,9 @@ import {
     LOAD_CATEGORIES,
     LOAD_COMMENTS,
     LOAD_POST,
-    ORDER_POST
+    ORDER_POST,
+    REMOVE_POST,
+    EDIT_POST
 } from '../actions'
 
 function categories (state = [], action){
@@ -21,6 +23,10 @@ function posts (state = [], action){
     switch (action.type) {
         case LOAD_POSTS : 
             return action.posts
+        case REMOVE_POST :
+            return state.filter(post => post.id !== action.id)
+        case EDIT_POST : 
+            return state.map(post => post.id == action.id)
         default:
             return state
     }

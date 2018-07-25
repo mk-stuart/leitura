@@ -16,11 +16,11 @@ class formModalPost extends Component {
     editPostModalHere = () => {
         console.log('cheguei carai')
         let id = this.state.id
-        let title = this.title
-        let body = this.body
-        console.log(this.state.title, this.state.body, ' opa ', this.title, this.body)
-        /*this.props.editPost({ id , title, body })
-        this.props.closeModalPost()*/
+        let title = this.title.value
+        let body = this.body.value
+        console.log(this.state.title, this.state.body, ' opa ', title, body)
+        this.props.editPost({ id , title, body })
+        this.props.closeModalPost()
     }
     afterOpenModal() {
         this.title.value = this.state.title
@@ -61,13 +61,13 @@ class formModalPost extends Component {
                         <div className="form-group">
                             <Material.MdTitle size={25} className="prefix grey-text" />
                             <label htmlFor="titlePost">Title Post</label>
-                            <input type="text" ref={(title) => this.title = title} name="title" onChange={this.handleChange} id="titlePost" className="form-control" required/>
+                            <input type="text" ref={(title) => this.title = title} name="title" id="titlePost" className="form-control" required/>
                             
                         </div>
                         <div className="form-group">
                             <Material.MdTextsms size={25} className="prefix grey-text" />
                             <label htmlFor="bodyPost">Content</label>
-                            <textarea type="text" ref={(body) => this.body = body} name="body" onChange={this.handleChange} id="bodyPost" className="form-control" rows="3" required></textarea>
+                            <textarea type="text" ref={(body) => this.body = body} name="body" id="bodyPost" className="form-control" rows="3" required></textarea>
                         </div>
                         <div className="text-center mt-4">
                             {/*<a onClick={() => this.props.editPost({id: id, title: this.title, body: this.body})} className="btn btn-primary">Confirm</a>*/}

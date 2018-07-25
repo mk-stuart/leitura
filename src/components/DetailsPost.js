@@ -82,10 +82,9 @@ class DetailsPost extends Component {
     editPost = ({id, title, body}) =>{
         console.log('cheguei no edit post')
         console.log(id, title, body)
-        /*
-        let title = this.title.value
+        /*let title = this.title.value
         let body = this.body.value
-        let id = this.state.id
+        let id = this.state.id*/
         LeituraApi.editPost(id, title, body).then((result) => {
             this.getPost()
         })
@@ -94,7 +93,6 @@ class DetailsPost extends Component {
             title: '',
             body: ''
         }))
-        this.closeModalPost()*/
     }
     deletePost(id){
         LeituraApi.deletePost(id).then((result) => {
