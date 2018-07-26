@@ -20,13 +20,14 @@ function categories (state = [], action){
 }
 
 function posts (state = [], action){
+    console.log('action ', action, 'state ', state )
     switch (action.type) {
         case LOAD_POSTS : 
             return action.posts
         case REMOVE_POST :
             return state.filter(post => post.id !== action.id)
         case EDIT_POST : 
-            return state.map(post => post.id == action.id)
+            return state.map(post => post.id === action.id)
         default:
             return state
     }

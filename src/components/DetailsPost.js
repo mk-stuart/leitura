@@ -4,7 +4,7 @@ import * as Material from 'react-icons/lib/md'
 import { connect } from 'react-redux'
 import * as LeituraApi from '../utils/api'
 //import * as Actions from '../actions'
-import { loadComments, loadPost } from '../actions'
+import { loadComments, loadPost, editPost } from '../actions'
 import { capitalize, guid } from '../utils/helpers'
 import { Redirect } from 'react-router-dom'
 import Erro404 from './404'
@@ -82,6 +82,7 @@ class DetailsPost extends Component {
     editPost = ({id, title, body}) =>{
         console.log('cheguei no edit post')
         console.log(id, title, body)
+        const { editPost } = this.props
         /*let title = this.title.value
         let body = this.body.value
         let id = this.state.id*/
@@ -242,14 +243,14 @@ class DetailsPost extends Component {
     }
 }
 function mapStateToProps( {post, comments}, props) {
-
     return { post, comments }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         loadPost: (data) => dispatch(loadPost(data)),
-        loadComments: (data) => dispatch(loadComments(data))
+        loadComments: (data) => dispatch(loadComments(data)),
+        editPost: (data) => dispatch(editPost(data))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsPost)
